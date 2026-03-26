@@ -30,10 +30,20 @@ const drainQueue = (error: unknown, token: string | null) => {
 
 // Request Interceptor
 httpClient.interceptors.request.use((config) => {
+  console.log("Request:", config.method?.toUpperCase(), config);
   const token = tokenStore.getAccessToken();
+  const sessionId = tokenStore.getSessionId();
+
+  console.log("from http client interceptor", { token });
+
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  if (sessionId && config.headers) {
+    config.headers["x-session-id"] = sessionId;
+  }
+
   return config;
 });
 
@@ -49,7 +59,7 @@ httpClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (originalRequest.url?.includes("/auth/refresh-token")) {
+    if (originalRequest.url?.includes("/auth/refresh")) {
       tokenStore.clear();
       if (typeof window !== "undefined")
         window.location.href = "/login?error=session_expired";
@@ -59,11 +69,14 @@ httpClient.interceptors.response.use(
     originalRequest._retry = true;
 
     if (isRefreshing) {
-      return new Promise<string | null>((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      }).then((token) => {
-        originalRequest.headers.Authorization = `Bearer ${token}`;
-        return httpClient(originalRequest);
+      return new Promise((resolve, reject) => {
+        failedQueue.push({
+          resolve: (token: string | null) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            resolve(httpClient(originalRequest)); // Resolve with the retried request
+          },
+          reject: (err: any) => reject(err),
+        });
       });
     }
 
@@ -71,7 +84,7 @@ httpClient.interceptors.response.use(
     try {
       const sessionId = tokenStore.getSessionId();
       const { data } = await axios.post(
-        `${BASE_URL}/auth/refresh-token`,
+        `${BASE_URL}/auth/refresh`,
         { sessionId },
         { withCredentials: true },
       );
@@ -83,6 +96,7 @@ httpClient.interceptors.response.use(
       originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
       return httpClient(originalRequest);
     } catch (err) {
+      console.log(err);
       drainQueue(err, null);
       tokenStore.clear();
       if (typeof window !== "undefined")
