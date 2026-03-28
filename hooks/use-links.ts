@@ -8,7 +8,6 @@ export const useLinks = (page = 1, limit = 10) => {
       const { data } = await httpClient.get(
         `/links?page=${page}&limit=${limit}`,
       );
-      // Expected: { links: [], total: number }
       return data;
     },
   });

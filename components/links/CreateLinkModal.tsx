@@ -37,11 +37,12 @@ export function CreateLinkModal({ open, onClose }: CreateLinkModalProps) {
     try {
       createLink(
         {
-          originalUrl: url,
-          customCode: customCode || undefined,
+          longUrl: url,
+          customAlias: customCode || undefined,
         },
         {
           onSuccess: (data) => {
+            console.log("data", data);
             toast({
               title: "Link created!",
               message: `Short link: ${data.shortCode}`,
@@ -51,9 +52,9 @@ export function CreateLinkModal({ open, onClose }: CreateLinkModalProps) {
             setCustomCode("");
             onClose();
           },
-          onError: () => {
+          onError: (err) => {
             toast({
-              title: "Failed to create link",
+              title: err.message || "Failed to create link",
               type: "error",
             });
           },
@@ -138,7 +139,7 @@ export function CreateLinkModal({ open, onClose }: CreateLinkModalProps) {
             </label>
             <div className="flex items-center bg-blue-50 rounded-lg border border-gray-200 px-3">
               <span className="text-xs text-gray-500 font-semibold whitespace-nowrap">
-                sprynt.io/
+                short-url.io/
               </span>
               <input
                 value={customCode}

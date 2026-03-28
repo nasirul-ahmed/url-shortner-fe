@@ -7,22 +7,39 @@ export interface Session {
 }
 
 export interface ShortUrlLink {
+  // shortCode: string;
+  // originalUrl: string;
+  // totalClicks: number;
+  // status: "active" | "expired" | "paused";
+  // createdAt: string;
+  // expiresAt?: string;
+
+  _id?: string;
   shortCode: string;
-  originalUrl: string;
-  totalClicks: number;
-  status: "active" | "expired" | "paused";
-  createdAt: string;
-  expiresAt?: string;
+  longUrl: string;
+  customAlias?: string;
+  createdAt: Date;
+  expiresAt?: Date;
+  userId?: string;
+  isActive: boolean;
+  clickCount: number;
+}
+
+export interface Pagination {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 export interface PaginatedLinks {
-  data: ShortUrlLink[];
-  total: number;
+  links: ShortUrlLink[];
+  pagination: Pagination;
 }
 
 export interface CreateLinkPayload {
-  originalUrl: string;
-  customCode?: string;
+  longUrl: string;
+  customAlias?: string;
 }
 
 export interface LinkAnalytics {

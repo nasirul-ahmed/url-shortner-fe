@@ -1,24 +1,26 @@
 "use client";
 
 import React from "react";
-import { ShortUrlLink } from "@/types/api";
+import { PaginatedLinks, ShortUrlLink } from "@/types/api";
 import { Badge } from "@/components/ui/Badge";
 import { LinkRowActions } from "./LinkRowActions";
 import { formatDate, truncateUrl } from "@/lib/utils";
 
-type Link = ShortUrlLink;
-
 interface LinksTableProps {
-  links: ShortUrlLink[];
+  data: PaginatedLinks;
   isLoading?: boolean;
   onDeleteLink?: (shortCode: string) => void;
+  onPageChange?: (page: number) => void;
 }
 
 export function LinksTable({
-  links,
+  data,
   isLoading,
   onDeleteLink,
+  onPageChange,
 }: LinksTableProps) {
+  const { links, pagination } = data;
+
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -78,34 +80,65 @@ export function LinksTable({
               <td className="px-6 py-4">
                 <div
                   className="text-sm text-gray-900 truncate"
-                  title={link.originalUrl}
+                  title={link.longUrl}
                 >
-                  {truncateUrl(link.originalUrl, 50)}
+                  {truncateUrl(link.longUrl, 50)}
                 </div>
               </td>
               <td className="px-6 py-4">
                 <div className="text-sm font-semibold text-gray-900">
-                  {link.totalClicks}
+                  {link.clickCount}
                 </div>
               </td>
               <td className="px-6 py-4">
-                <Badge status={link.status} />
+                <Badge status={link.isActive ? "Active" : "Inactive"} />
               </td>
               <td className="px-6 py-4">
                 <div className="text-sm text-gray-600">
                   {formatDate(link.createdAt)}
                 </div>
               </td>
+
               <td className="px-6 py-4 text-right">
                 <LinkRowActions
                   link={link}
-                  onDelete={() => onDeleteLink?.(link.shortCode)}
+                  onDelete={
+                    typeof onDeleteLink === "function"
+                      ? () => onDeleteLink?.(link.shortCode)
+                      : undefined
+                  }
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {pagination && (
+        <div className="flex items-center justify-between mt-4 px-2">
+          <div className="text-sm text-gray-600">
+            Page {pagination.page} of {pagination.totalPages}
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              disabled={Number(pagination.page) === 1}
+              onClick={() => onPageChange?.(Number(pagination.page) - 1)}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Prev
+            </button>
+
+            <button
+              disabled={Number(pagination.page) === pagination.totalPages}
+              onClick={() => onPageChange?.(Number(pagination.page) + 1)}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
