@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
-import useToast from "@/hooks/use-toast";
-import { Mail, Lock, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Mail, Lock } from "lucide-react";
+import useToast from "@/contexts/toast-context";
 
 const PRIMARY = "#5e72e4";
 
@@ -42,12 +42,9 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("📝 Form submitted with:", { email, password });
     setLoading(true);
     try {
-      console.log("🔐 Calling login...");
       await login(email, password);
-      console.log("✅ Login successful");
     } catch (error: any) {
       console.error("❌ Login error:", error);
       toast({

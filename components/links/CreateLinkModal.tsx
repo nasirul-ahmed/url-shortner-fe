@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useCreateLink } from "@/hooks/use-create-link";
-import useToast from "@/hooks/use-toast";
 import { X, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import useToast from "@/contexts/toast-context";
 
 interface CreateLinkModalProps {
   open: boolean;
@@ -42,7 +42,6 @@ export function CreateLinkModal({ open, onClose }: CreateLinkModalProps) {
         },
         {
           onSuccess: (data) => {
-            console.log("data", data);
             toast({
               title: "Link created!",
               message: `Short link: ${data.shortCode}`,

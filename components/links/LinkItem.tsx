@@ -1,30 +1,41 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import useToast from "@/contexts/toast-context";
+import { BASE_URL } from "@/lib/constants";
+import { cn, copyUrl } from "@/lib/utils";
 import { ShortUrlLink } from "@/types/api";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 export default function LinkItem({ link }: { link: ShortUrlLink }) {
+  const { toast } = useToast();
   const [copied, setCopied] = useState(false);
-  const shortUrl = `http://localhost:4000/${link.shortCode}`;
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(shortUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    const [isCopied, url] = await copyUrl(link.shortCode);
+
+    if (isCopied) {
+      toast({
+        title: "Copied!",
+        message: url,
+        type: "success",
+      });
+
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
     <div className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-blue-200 transition-all mb-3 group">
       <div className="flex flex-col overflow-hidden mr-4">
         <span className="text-blue-600 font-bold text-sm truncate">
-          {shortUrl}
+          {`${BASE_URL}/${link.shortCode}`}
         </span>
         <span className="text-gray-400 text-xs truncate">{link.longUrl}</span>
       </div>
       <button
-        onClick={copyToClipboard}
+        onClick={handleCopy}
         className={cn(
           "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all",
           copied

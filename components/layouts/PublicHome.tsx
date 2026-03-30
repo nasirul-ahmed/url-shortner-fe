@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useCreateLink } from "@/hooks/use-create-link";
-import useToast from "@/hooks/use-toast";
 import {
   ArrowUpRight,
   LogIn,
@@ -16,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useGuestLinks } from "@/hooks/use-guest-user-links";
 import LinkItem from "../links/LinkItem";
 import { ShortUrlLink } from "@/types/api";
+import useToast from "@/contexts/toast-context";
 
 const PRIMARY = "#5e72e4";
 

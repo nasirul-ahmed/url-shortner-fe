@@ -22,8 +22,6 @@ export default function DashboardPage() {
     dayjs(query.endDate).toDate().toISOString(),
   );
 
-  console.log({ dashboardData });
-
   return (
     <div className="space-y-6">
       {/* Header */}

@@ -16,7 +16,7 @@ export const tokenStore = {
         expires: 7, // 7 days
         path: "/",
         sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
+        secure: true, //process.env.NODE_ENV === "production",
       });
     }
   },

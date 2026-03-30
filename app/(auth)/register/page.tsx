@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import useToast from "@/hooks/use-toast";
 import { Mail, Lock, User, AlertCircle } from "lucide-react";
+import useToast from "@/contexts/toast-context";
 
 const PRIMARY = "#5e72e4";
 

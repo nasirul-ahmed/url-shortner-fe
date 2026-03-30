@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ShortUrlLink } from "@/types/api";
-import useToast from "@/hooks/use-toast";
-import { copyToClipboard } from "@/lib/utils";
+import { copyUrl } from "@/lib/utils";
 import { Copy, Trash2, ExternalLink, MoreVertical } from "lucide-react";
+import useToast from "@/contexts/toast-context";
+import { BASE_URL } from "@/lib/constants";
 
 interface LinkRowActionsProps {
   link: ShortUrlLink;
@@ -12,17 +13,16 @@ interface LinkRowActionsProps {
 }
 
 export function LinkRowActions({ link, onDelete }: LinkRowActionsProps) {
-  console.log({ onDelete });
-  const [showMenu, setShowMenu] = useState(false);
   const { toast } = useToast();
+  const ref = useRef<HTMLDivElement>(null);
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleCopy = async () => {
-    const fullUrl = `${window.location.origin}/${link.shortCode}`;
-    const copied = await copyToClipboard(fullUrl);
+    const [copied, url] = await copyUrl(link.shortCode);
     if (copied) {
       toast({
         title: "Copied!",
-        message: fullUrl,
+        message: url,
         type: "success",
       });
     }
@@ -30,12 +30,29 @@ export function LinkRowActions({ link, onDelete }: LinkRowActionsProps) {
   };
 
   const handleOpen = () => {
-    window.open(`/${link.shortCode}`, "_blank");
+    window.open(`${BASE_URL}/${link.shortCode}`, "_blank");
     setShowMenu(false);
   };
 
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        showMenu &&
+        ref.current &&
+        !ref.current.contains(event.target as Node)
+      ) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMenu]);
+
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <button
         onClick={() => setShowMenu(!showMenu)}
         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

@@ -30,11 +30,8 @@ const drainQueue = (error: unknown, token: string | null) => {
 
 // Request Interceptor
 httpClient.interceptors.request.use((config) => {
-  console.log("Request:", config.method?.toUpperCase(), config);
   const token = tokenStore.getAccessToken();
   const sessionId = tokenStore.getSessionId();
-
-  console.log("from http client interceptor", { token });
 
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;

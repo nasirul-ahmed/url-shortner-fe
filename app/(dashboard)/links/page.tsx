@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useLinks } from "@/hooks/use-links";
 import { LinksTable } from "@/components/links/LinksTable";
 import { CreateLinkModal } from "@/components/links/CreateLinkModal";
-import useToast from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
+import useToast from "@/contexts/toast-context";
 
 export default function LinksPage() {
   const { toast } = useToast();

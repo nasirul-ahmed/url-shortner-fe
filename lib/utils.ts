@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { BASE_URL } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,4 +41,11 @@ export const toQueryString = (params: Record<string, any>): string => {
   const queryString = searchParams.toString();
 
   return queryString ? `?${queryString}` : "";
+};
+
+export const copyUrl = async (shortCode: string) => {
+  const fullUrl = `${BASE_URL}/${shortCode}`;
+  const cp = await copyToClipboard(fullUrl);
+
+  return [cp, fullUrl];
 };

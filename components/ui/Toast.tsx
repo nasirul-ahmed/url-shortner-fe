@@ -1,7 +1,7 @@
 import React from "react";
-import { ToastItem } from "@/hooks/use-toast";
 import { X, CheckCircle2, AlertCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ToastItem } from "@/contexts/toast-context";
 
 interface ToastProps {
   toasts: ToastItem[];
