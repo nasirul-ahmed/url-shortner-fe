@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { PaginatedLinks, ShortUrlLink } from "@/types/api";
+import { PaginatedLinks } from "@/types/api";
 import { Badge } from "@/components/ui/Badge";
 import { LinkRowActions } from "./LinkRowActions";
 import { formatDate, truncateUrl } from "@/lib/utils";

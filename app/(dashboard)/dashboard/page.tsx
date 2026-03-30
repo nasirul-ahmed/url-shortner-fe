@@ -3,20 +3,26 @@ import { useLinks } from "@/hooks/use-links";
 import { StatCard } from "@/components/ui/StatCard";
 import { LinksTable } from "@/components/links/LinksTable";
 import { BarChart3, Link2, MousePointerClick, TrendingUp } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { useDashboardStats } from "@/hooks/use-dashboard";
+import dayjs from "dayjs";
 
 export default function DashboardPage() {
   const [page, setPage] = React.useState(1);
   const { data: linksData, isLoading } = useLinks(page);
+  const [query, setQuery] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
 
   const links = linksData?.links || [];
-  const totalClicks = links.reduce(
-    (sum: number, l: any) => sum + l.totalClicks,
-    0,
+
+  const { data: dashboardData, isLoading: dashboardLoader } = useDashboardStats(
+    dayjs(query.startDate).subtract(7, "day").toDate().toISOString(),
+    dayjs(query.endDate).toDate().toISOString(),
   );
-  const activeLinks = links.filter((l: any) => l.status === "active").length;
-  const avgClicks =
-    links.length > 0 ? Math.round(totalClicks / links.length) : 0;
+
+  console.log({ dashboardData });
 
   return (
     <div className="space-y-6">
@@ -31,26 +37,30 @@ export default function DashboardPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
+          loading={dashboardLoader}
           label="Total Clicks"
-          value={totalClicks.toLocaleString()}
+          value={dashboardData?.data?.totalClicks.toLocaleString()}
           delta={"+12.5%"}
           icon={<MousePointerClick className="w-5 h-5 text-blue-500" />}
         />
         <StatCard
+          loading={dashboardLoader}
           label="Active Links"
-          value={activeLinks}
+          value={dashboardData?.data?.activeLinksCount}
           delta={"+2"}
           icon={<Link2 className="w-5 h-5 text-green-500" />}
         />
         <StatCard
+          loading={dashboardLoader}
           label="Avg Clicks/Link"
-          value={avgClicks}
+          value={dashboardData?.data?.avgClicks}
           delta={"+8.2%"}
           icon={<TrendingUp className="w-5 h-5 text-purple-500" />}
         />
         <StatCard
+          loading={dashboardLoader}
           label="Total Links"
-          value={links.length}
+          value={dashboardData?.data?.totalLinks}
           delta={"+3"}
           icon={<BarChart3 className="w-5 h-5 text-orange-500" />}
         />

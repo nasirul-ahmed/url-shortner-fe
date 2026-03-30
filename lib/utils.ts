@@ -27,3 +27,17 @@ export async function copyToClipboard(text: string) {
     return false;
   }
 }
+
+export const toQueryString = (params: Record<string, any>): string => {
+  const cleanParams = Object.fromEntries(
+    Object.entries(params).filter(
+      ([_, value]) => value !== null && value !== undefined,
+    ),
+  );
+
+  const searchParams = new URLSearchParams(cleanParams);
+
+  const queryString = searchParams.toString();
+
+  return queryString ? `?${queryString}` : "";
+};

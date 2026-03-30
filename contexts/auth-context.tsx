@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import { tokenStore } from "@/lib/token-store";
 import { authApi } from "@/lib/api-module";
@@ -83,6 +89,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // router.push("/login");
 
     window.location.href = "/login";
+  }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const token = tokenStore.getAccessToken();
+
+        if (!token) {
+          return;
+        }
+        const { data } = await authApi.me();
+        setUser(data);
+      } catch {
+        tokenStore.clear();
+        setUser(null);
+      }
+    };
+
+    init();
   }, []);
 
   return (

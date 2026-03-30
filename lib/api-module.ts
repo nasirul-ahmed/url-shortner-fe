@@ -1,5 +1,6 @@
 import { httpClient } from "./http-client";
 import * as T from "../types/api";
+import { toQueryString } from "./utils";
 
 export const authApi = {
   me: () => httpClient.get<any>("/auth/me"),
@@ -21,6 +22,8 @@ export const authApi = {
 };
 
 export const linksApi = {
+  dashboardData: (query: any) => httpClient.get(`/dashboard${toQueryString(query)}`),
+
   list: (page = 1, limit = 10) =>
     httpClient.get<T.PaginatedLinks>(`/links?page=${page}&limit=${limit}`),
 
