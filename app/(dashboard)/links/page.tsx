@@ -13,8 +13,6 @@ export default function LinksPage() {
   const [page, setPage] = useState(1);
   const { data: linksData, isLoading } = useLinks(page);
 
-  console.log({ linksData });
-
   const handleDeleteLink = (shortCode: string) => {
     // TODO: Implement delete mutation
     toast({
@@ -47,10 +45,13 @@ export default function LinksPage() {
         </div>
         <button
           onClick={() => setCreateModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+          className="flex items-center flex-col px-4 py-2.5 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
         >
-          <Plus className="w-4 h-4" />
-          New Link
+          <div className="flex items-center gap-2 text-white font-semibold ">
+            <Plus className="w-4 h-4" />
+            New Link
+          </div>
+          <p className="text-gray-300 text-sm">Cmd+K to open anytime</p>
         </button>
       </div>
 

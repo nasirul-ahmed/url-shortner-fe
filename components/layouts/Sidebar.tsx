@@ -5,52 +5,35 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/auth-context";
-import {
-  BarChart3,
-  Link2,
-  Settings,
-  LayoutDashboard,
-  LogOut,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
+import { navItems } from "@/lib/constants";
 
 const PRIMARY = "#5e72e4";
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean;
+}
+
+export function Sidebar({ isOpen }: SidebarProps) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-
-  console.log({ user });
-
-  const navItems = [
-    {
-      id: "dashboard",
-      label: "Overview",
-      icon: LayoutDashboard,
-      href: "/dashboard",
-    },
-    { id: "links", label: "Links", icon: Link2, href: "/links" },
-    {
-      id: "analytics",
-      label: "Analytics",
-      icon: BarChart3,
-      href: "/analytics",
-    },
-    { id: "settings", label: "Settings", icon: Settings, href: "/settings" },
-  ];
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href);
 
   return (
     <aside
-      className="w-60 flex-shrink-0 h-screen sticky top-0 bg-white/70 backdrop-blur-2xl border-r border-blue-500/10 flex flex-col shadow-sm"
+      className={cn(
+        "w-60 flex-shrink-0 h-screen sticky top-0 bg-white/70 backdrop-blur-2xl border-r border-blue-500/10 flex flex-col shadow-sm",
+        isOpen ? "flex-shrink" : "hidden",
+      )}
       style={{
         backgroundImage:
           "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(239,240,252,0.95) 100%)",
       }}
     >
       {/* Logo Section */}
-      <div className="px-6 py-7 border-b border-blue-500/10">
+      <div className="px-6 py-4.5 border-b border-blue-500/10">
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold"

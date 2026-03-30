@@ -16,9 +16,9 @@ export function Header({ onMenuClick }: HeaderProps) {
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          <Menu className="w-5 h-5" />
+          <Menu color="black" className="w-5 h-5" />
         </button>
         <h1 className="text-lg font-bold text-gray-900">Dashboard</h1>
       </div>

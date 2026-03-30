@@ -4,8 +4,18 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useCreateLink } from "@/hooks/use-create-link";
 import useToast from "@/hooks/use-toast";
-import { ArrowUpRight, LogIn, Zap, BarChart3, Lock } from "lucide-react";
+import {
+  ArrowUpRight,
+  LogIn,
+  Zap,
+  BarChart3,
+  Lock,
+  History,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useGuestLinks } from "@/hooks/use-guest-user-links";
+import LinkItem from "../links/LinkItem";
+import { ShortUrlLink } from "@/types/api";
 
 const PRIMARY = "#5e72e4";
 
@@ -15,8 +25,14 @@ export function PublicHome() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const { mutate: createLink } = useCreateLink();
+  const { data: guestLinks } = useGuestLinks();
 
   const isValid = url.match(/^https?:\/\/.+\..+/);
+
+  const resetStates = () => {
+    setUrl("");
+    setCustomCode("");
+  };
 
   const handleCreate = async () => {
     if (!isValid) return;
@@ -35,8 +51,8 @@ export function PublicHome() {
               message: `Short link: ${data.shortCode}`,
               type: "success",
             });
-            setUrl("");
-            setCustomCode("");
+
+            resetStates();
           },
           onError: () => {
             toast({
@@ -85,14 +101,15 @@ export function PublicHome() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-50 to-blue-100/50">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 bg-gradient-to-br from-blue-50 to-blue-100/50">
         <div className="w-full max-w-2xl">
           {/* Headline */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-2">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-              Short links,
-              <br />
-              <span style={{ color: PRIMARY }}>Big Impact</span>
+              Short links -{/* <br /> */}
+              <span className="ml-2" style={{ color: PRIMARY }}>
+                Big Impact
+              </span>
             </h1>
             <p className="text-lg text-gray-600">
               Create short, memorable links instantly. Track clicks and analyze
@@ -174,6 +191,23 @@ export function PublicHome() {
               ✨ Free and instant. No account required to get started.
             </p>
           </div>
+
+          {guestLinks && guestLinks.length > 0 && (
+            <div className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                  <History className="w-4 h-4 text-blue-500" />
+                  Your Recent Links
+                </h2>
+              </div>
+
+              <div className="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                {guestLinks.map((link: ShortUrlLink) => (
+                  <LinkItem key={link._id || link.shortCode} link={link} />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

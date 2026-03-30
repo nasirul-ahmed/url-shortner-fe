@@ -147,14 +147,16 @@ export default function LoginPage() {
               Sign up
             </Link>
           </p>
-        </div>
-
-        {/* Demo helper */}
-        {/* <div className="text-center mt-6">
-          <p className="text-xs text-gray-500 bg-white/50 inline-block px-3 py-1.5 rounded-full">
-            Demo: Use any email/password
+          <p className="text-center text-gray-600 text-sm mt-4">
+            Don't want to create an account?
+            <Link
+              href="/"
+              className="font-semibold text-blue-600 ml-2 hover:underline"
+            >
+              Try as a Guest
+            </Link>
           </p>
-        </div> */}
+        </div>
       </div>
     </div>
   );

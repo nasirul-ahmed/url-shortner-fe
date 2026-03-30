@@ -5,7 +5,14 @@ import { ClicksChart } from "@/components/analytics/ClicksChart";
 import { ReferrersChart } from "@/components/analytics/ReferrersChart";
 import { DeviceChart } from "@/components/analytics/DeviceChart";
 import { StatCard } from "@/components/ui/StatCard";
-import { MousePointerClick, TrendingUp, Users, Zap } from "lucide-react";
+import {
+  BarChart3,
+  MousePointerClick,
+  TrendingUp,
+  Users,
+  Zap,
+} from "lucide-react";
+import { useDashboardStats } from "@/hooks/use-dashboard";
 
 const MOCK_CLICKS_DATA = [
   { date: "Mar 1", clicks: 312 },
@@ -42,39 +49,43 @@ export default function AnalyticsPage() {
   const conversionRate = 12.5;
   const avgTimeOnSite = "2m 34s";
 
+  const { data: dashboardData } = useDashboardStats();
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
-        <p className="text-gray-600">Track your link performance and user behavior</p>
+        <p className="text-gray-600">
+          Track your link performance and user behavior
+        </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           label="Total Clicks"
-          value={totalClicks.toLocaleString()}
+          value={dashboardData?.data?.totalClicks}
           delta={"+24.5%"}
           icon={<MousePointerClick className="w-5 h-5 text-blue-500" />}
         />
         <StatCard
           label="Unique Visitors"
-          value={uniqueVisitors.toLocaleString()}
+          value={dashboardData?.data?.uniqueVisitors}
           delta={"+18.2%"}
           icon={<Users className="w-5 h-5 text-green-500" />}
         />
         <StatCard
-          label="Conversion Rate"
-          value={`${conversionRate}%`}
-          delta={"+2.1%"}
-          icon={<TrendingUp className="w-5 h-5 text-purple-500" />}
+          label="Avg. Click"
+          value={dashboardData?.data?.avgClicks}
+          // delta={"+45s"}
+          icon={<Zap className="w-5 h-5 text-orange-500" />}
         />
         <StatCard
-          label="Avg. Time on Site"
-          value={avgTimeOnSite}
-          delta={"+45s"}
-          icon={<Zap className="w-5 h-5 text-orange-500" />}
+          label="Total Links"
+          value={dashboardData?.data?.totalLinks}
+          delta={"+3"}
+          icon={<BarChart3 className="w-5 h-5 text-orange-500" />}
         />
       </div>
 
