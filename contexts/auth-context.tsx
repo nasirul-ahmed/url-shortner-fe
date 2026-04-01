@@ -10,6 +10,7 @@ import React, {
 import { useRouter } from "next/navigation";
 import { tokenStore } from "@/lib/token-store";
 import { authApi } from "@/lib/api-module";
+import { LoginResponse } from "@/types/api";
 
 export enum UserRole {
   USER = "USER",
@@ -55,14 +56,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log("Logging in from auth context");
 
       setIsLoading(true);
-      const { data } = await authApi.login(email, password);
-      tokenStore.setAccessToken(data.accessToken);
+      const data = await authApi.login(email, password);
+
+      tokenStore.setAccessToken(data.accessToken, data.expiresIn);
       tokenStore.setSessionId(data.sessionId);
 
       try {
         const userDetails = await authApi.me();
-
-        console.log({ userDetails: userDetails.data });
         setUser(userDetails.data);
         // window.location.href = "/dashboard";
         router.push("/dashboard");

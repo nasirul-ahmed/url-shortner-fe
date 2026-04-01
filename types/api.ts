@@ -1,3 +1,9 @@
+export interface LoginResponse {
+  accessToken: string;
+  expiresIn: string;
+  sessionId: string;
+}
+
 export interface Session {
   id: string;
   device: string;
@@ -44,4 +50,14 @@ export interface CreateLinkPayload {
 
 export interface LinkAnalytics {
   clicksOverTime: { date: string; clicks: number }[];
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: {
+    code: number;
+    message: string;
+    details?: any;
+  };
 }

@@ -5,28 +5,38 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, User, AlertCircle } from "lucide-react";
 import useToast from "@/contexts/toast-context";
+import { authApi } from "@/lib/api-module";
 
 const PRIMARY = "#5e72e4";
 
 export default function RegisterPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+    username: "",
+  });
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  const onInputChange = (
+    e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
+  ) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // TODO: Call register API
+      const response = await authApi.register(userData);
       toast({
         title: "Account created",
         message: "Check your email to verify your account",
         type: "success",
       });
-      router.push("/login?verified=true");
+      router.push("/verify-email");
     } catch (error: any) {
       toast({
         title: "Registration failed",
@@ -59,7 +69,9 @@ export default function RegisterPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-1">
             Create account
           </h1>
-          <p className="text-gray-600">Join ShortUrl and start shortening URLs</p>
+          <p className="text-gray-600">
+            Join ShortUrl and start shortening URLs
+          </p>
         </div>
 
         {/* Card */}
@@ -68,16 +80,17 @@ export default function RegisterPage() {
             {/* Name */}
             <div>
               <label className="text-sm font-semibold text-gray-700 block mb-2">
-                Full name
+                Username
               </label>
               <div className="relative">
                 <User className="absolute left-3.5 top-3.5 w-5 h-5 text-gray-400" />
                 <input
+                  name="username"
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={userData.username}
+                  onChange={onInputChange}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-gray-200 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:bg-blue-50/30"
-                  placeholder="John Doe"
+                  placeholder="username"
                   required
                 />
               </div>
@@ -91,9 +104,10 @@ export default function RegisterPage() {
               <div className="relative">
                 <Mail className="absolute left-3.5 top-3.5 w-5 h-5 text-gray-400" />
                 <input
+                  name="email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={userData.email}
+                  onChange={onInputChange}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-gray-200 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:bg-blue-50/30"
                   placeholder="you@example.com"
                   required
@@ -109,9 +123,10 @@ export default function RegisterPage() {
               <div className="relative">
                 <Lock className="absolute left-3.5 top-3.5 w-5 h-5 text-gray-400" />
                 <input
+                  name="password"
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={userData.password}
+                  onChange={onInputChange}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-gray-200 text-gray-900 outline-none transition-colors focus:border-blue-500 focus:bg-blue-50/30"
                   placeholder="••••••••"
                   required

@@ -16,13 +16,22 @@ export const authApi = {
     });
   },
 
+  register: (input: { email: string; password: string; username: string }) => {
+    return httpClient.post<{
+      userId: "69ccc65bdd7974a5c4de9d4a";
+      email: "nasirul3691@gmail.com";
+      username: "nasir1";
+    }>("auth/register", input);
+  },
+
   logout: (sessionId: string) => httpClient.post("/auth/logout", { sessionId }),
 
   getSessions: () => httpClient.get<T.Session[]>("/auth/sessions"),
 };
 
 export const linksApi = {
-  dashboardData: (query: any) => httpClient.get(`/dashboard${toQueryString(query)}`),
+  dashboardData: (query: any) =>
+    httpClient.get(`/dashboard${toQueryString(query)}`),
 
   list: (page = 1, limit = 10) =>
     httpClient.get<T.PaginatedLinks>(`/links?page=${page}&limit=${limit}`),
