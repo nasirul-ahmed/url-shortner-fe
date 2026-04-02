@@ -6,6 +6,7 @@ import { copyUrl } from "@/lib/utils";
 import { Copy, Trash2, ExternalLink, MoreVertical } from "lucide-react";
 import useToast from "@/contexts/toast-context";
 import { BASE_URL } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 
 interface LinkRowActionsProps {
   link: ShortUrlLink;
@@ -13,6 +14,7 @@ interface LinkRowActionsProps {
 }
 
 export function LinkRowActions({ link, onDelete }: LinkRowActionsProps) {
+  const router = useRouter();
   const { toast } = useToast();
   const ref = useRef<HTMLDivElement>(null);
   const [showMenu, setShowMenu] = useState(false);

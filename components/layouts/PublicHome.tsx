@@ -27,6 +27,8 @@ export function PublicHome() {
   const { mutate: createLink } = useCreateLink();
   const { data: guestLinks } = useGuestLinks();
 
+  console.log("guestLinks ", guestLinks);
+
   const isValid = url.match(/^https?:\/\/.+\..+/);
 
   const resetStates = () => {
@@ -46,6 +48,7 @@ export function PublicHome() {
         },
         {
           onSuccess: (data: any) => {
+            console.log("dattttttttttt", data);
             toast({
               title: "Link created!",
               message: `Short link: ${data.shortCode}`,
@@ -202,9 +205,13 @@ export function PublicHome() {
               </div>
 
               <div className="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-                {guestLinks.map((link: ShortUrlLink) => (
-                  <LinkItem key={link._id || link.shortCode} link={link} />
-                ))}
+                {guestLinks.map((link: ShortUrlLink) => {
+                  console.log({ link });
+                  if (!link) return <></>;
+                  return (
+                    <LinkItem key={link._id || link.shortCode} link={link} />
+                  );
+                })}
               </div>
             </div>
           )}

@@ -7,7 +7,7 @@ export function useCreateLink() {
 
   return useMutation({
     mutationFn: (payload: T.CreateLinkPayload) =>
-      linksApi.create(payload).then((r) => r.data),
+      linksApi.create(payload).then((r) => r),
 
     onSuccess: (newLink) => {
       const existing = JSON.parse(localStorage.getItem("guest_links") || "[]");

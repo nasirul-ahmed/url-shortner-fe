@@ -4,6 +4,7 @@ import { PaginatedLinks } from "@/types/api";
 import { Badge } from "@/components/ui/Badge";
 import { LinkRowActions } from "./LinkRowActions";
 import { formatDate, truncateUrl } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface LinksTableProps {
   data: PaginatedLinks;
@@ -19,6 +20,8 @@ export function LinksTable({
   onPageChange,
 }: LinksTableProps) {
   const { links, pagination } = data;
+
+  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -37,6 +40,11 @@ export function LinksTable({
       </div>
     );
   }
+
+  const openLinkDetailsPage = (code: string) => {
+    router.push(`/links/${code}`);
+    // setShowMenu(false);
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -67,7 +75,8 @@ export function LinksTable({
           {links.map((link) => (
             <tr
               key={link.shortCode}
-              className="hover:bg-gray-50 transition-colors"
+              className="hover:bg-gray-50 transition-colors cursor-pointer"
+              onClick={() => openLinkDetailsPage(link.shortCode)}
             >
               <td className="px-6 py-4">
                 <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 import { authApi } from "@/lib/api-module";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useToast from "./use-toast";
+import useToast from '@/contexts/toast-context';
 
 export const useSessions = () => {
   const queryClient = useQueryClient();
@@ -10,7 +10,7 @@ export const useSessions = () => {
     queryKey: ["sessions"],
     queryFn: async () => {
       const response = await authApi.getSessions();
-      return response.data;
+      return response;
     },
   });
 
