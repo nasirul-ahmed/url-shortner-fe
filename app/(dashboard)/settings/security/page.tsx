@@ -4,7 +4,7 @@ import React from "react";
 import { useSessions } from "@/hooks/use-session";
 import { SessionsList } from "@/components/sessions/SessionsList";
 import { RevokeAllButton } from "@/components/sessions/RevokeAllButton";
-import useToast from "@/hooks/use-toast";
+import useToast from "@/contexts/toast-context";
 import { Lock } from "lucide-react";
 
 // TODO: Replace with actual API call
@@ -67,17 +67,24 @@ export default function SecurityPage() {
         <Lock className="w-6 h-6 text-gray-400" />
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Security</h1>
-          <p className="text-gray-600">Manage your active sessions and security</p>
+          <p className="text-gray-600">
+            Manage your active sessions and security
+          </p>
         </div>
       </div>
 
       {/* Active Sessions */}
       <div className="bg-white rounded-2xl border border-gray-200 p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Active Sessions</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-4">
+          Active Sessions
+        </h2>
         <p className="text-sm text-gray-600 mb-6">
           Here are the devices and locations where you're currently signed in.
         </p>
-        <SessionsList sessions={sessions} onRevokeSession={handleRevokeSession} />
+        <SessionsList
+          sessions={sessions}
+          onRevokeSession={handleRevokeSession}
+        />
       </div>
 
       {/* Revoke All */}
