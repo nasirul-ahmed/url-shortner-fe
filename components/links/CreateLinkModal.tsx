@@ -5,6 +5,7 @@ import { useCreateLink } from "@/hooks/use-create-link";
 import { X, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useToast from "@/contexts/toast-context";
+import { SITE_URL } from "@/lib/constants";
 
 interface CreateLinkModalProps {
   open: boolean;
@@ -138,7 +139,7 @@ export function CreateLinkModal({ open, onClose }: CreateLinkModalProps) {
             </label>
             <div className="flex items-center bg-blue-50 rounded-lg border border-gray-200 px-3">
               <span className="text-xs text-gray-500 font-semibold whitespace-nowrap">
-                short-url.io/
+                {SITE_URL}/
               </span>
               <input
                 value={customCode}

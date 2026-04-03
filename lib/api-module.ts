@@ -1,6 +1,7 @@
 import { httpClient } from "./http-client";
 import * as T from "../types/api";
 import { toQueryString } from "./utils";
+import { redirect } from "next/dist/server/api-utils";
 
 export const authApi = {
   me: () => httpClient.get<any>("/auth/me"),
@@ -38,6 +39,8 @@ export const linksApi = {
 
   create: (payload: T.CreateLinkPayload) =>
     httpClient.post<T.ShortUrlLink>("/shorten", payload),
+
+  getLongUrl: async (shortCode: string) => httpClient.get<string>(`/${shortCode}`),
 
   getAnalytics: (shortCode: string) =>
     httpClient.get<T.LinkAnalytics>(`/${shortCode}/analytics`),

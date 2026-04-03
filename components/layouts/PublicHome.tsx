@@ -16,6 +16,7 @@ import { useGuestLinks } from "@/hooks/use-guest-user-links";
 import LinkItem from "../links/LinkItem";
 import { ShortUrlLink } from "@/types/api";
 import useToast from "@/contexts/toast-context";
+import { SITE_URL } from "@/lib/constants";
 
 const PRIMARY = "#5e72e4";
 
@@ -159,7 +160,7 @@ export function PublicHome() {
               </label>
               <div className="flex items-center bg-gray-50 rounded-lg border border-gray-200 px-4">
                 <span className="text-sm text-gray-500 font-semibold whitespace-nowrap">
-                  short-url.io/
+                  {`${SITE_URL}/`}
                 </span>
                 <input
                   value={customCode}

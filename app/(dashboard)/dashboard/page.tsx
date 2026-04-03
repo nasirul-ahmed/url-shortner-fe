@@ -22,6 +22,8 @@ export default function DashboardPage() {
     dayjs(query.endDate).toDate().toISOString(),
   );
 
+  console.log({ dashboardData });
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -37,28 +39,28 @@ export default function DashboardPage() {
         <StatCard
           loading={dashboardLoader}
           label="Total Clicks"
-          value={dashboardData?.data?.totalClicks.toLocaleString()}
+          value={dashboardData?.totalClicks.toLocaleString()}
           delta={"+12.5%"}
           icon={<MousePointerClick className="w-5 h-5 text-blue-500" />}
         />
         <StatCard
           loading={dashboardLoader}
           label="Active Links"
-          value={dashboardData?.data?.activeLinksCount}
+          value={dashboardData?.activeLinksCount}
           delta={"+2"}
           icon={<Link2 className="w-5 h-5 text-green-500" />}
         />
         <StatCard
           loading={dashboardLoader}
           label="Avg Clicks/Link"
-          value={dashboardData?.data?.avgClicks}
+          value={dashboardData?.avgClicks}
           delta={"+8.2%"}
           icon={<TrendingUp className="w-5 h-5 text-purple-500" />}
         />
         <StatCard
           loading={dashboardLoader}
           label="Total Links"
-          value={dashboardData?.data?.totalLinks}
+          value={dashboardData?.totalLinks}
           delta={"+3"}
           icon={<BarChart3 className="w-5 h-5 text-orange-500" />}
         />

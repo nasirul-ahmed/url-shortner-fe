@@ -1,17 +1,10 @@
 "use client";
 
-import React from "react";
 import { ClicksChart } from "@/components/analytics/ClicksChart";
 import { ReferrersChart } from "@/components/analytics/ReferrersChart";
 import { DeviceChart } from "@/components/analytics/DeviceChart";
 import { StatCard } from "@/components/ui/StatCard";
-import {
-  BarChart3,
-  MousePointerClick,
-  TrendingUp,
-  Users,
-  Zap,
-} from "lucide-react";
+import { BarChart3, MousePointerClick, Users, Zap } from "lucide-react";
 import { useDashboardStats } from "@/hooks/use-dashboard";
 
 const MOCK_CLICKS_DATA = [
@@ -44,11 +37,6 @@ const MOCK_DEVICES = [
 ];
 
 export default function AnalyticsPage() {
-  const totalClicks = MOCK_CLICKS_DATA.reduce((sum, d) => sum + d.clicks, 0);
-  const uniqueVisitors = Math.round(totalClicks * 0.73);
-  const conversionRate = 12.5;
-  const avgTimeOnSite = "2m 34s";
-
   const { data: dashboardData } = useDashboardStats();
 
   return (
@@ -65,25 +53,25 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           label="Total Clicks"
-          value={dashboardData?.data?.totalClicks}
+          value={dashboardData?.totalClicks}
           delta={"+24.5%"}
           icon={<MousePointerClick className="w-5 h-5 text-blue-500" />}
         />
         <StatCard
           label="Unique Visitors"
-          value={dashboardData?.data?.uniqueVisitors}
+          value={dashboardData?.uniqueVisitors}
           delta={"+18.2%"}
           icon={<Users className="w-5 h-5 text-green-500" />}
         />
         <StatCard
           label="Avg. Click"
-          value={dashboardData?.data?.avgClicks}
+          value={dashboardData?.avgClicks}
           // delta={"+45s"}
           icon={<Zap className="w-5 h-5 text-orange-500" />}
         />
         <StatCard
           label="Total Links"
-          value={dashboardData?.data?.totalLinks}
+          value={dashboardData?.totalLinks}
           delta={"+3"}
           icon={<BarChart3 className="w-5 h-5 text-orange-500" />}
         />

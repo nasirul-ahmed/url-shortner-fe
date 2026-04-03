@@ -1,7 +1,15 @@
 import { BarChart3, LayoutDashboard, Link2, Settings } from "lucide-react";
 
+const NODE_ENV = process.env.NODE_ENV || "development";
+
+export const SITE_URL =
+  NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_SITE_URL
+    : "http://localhost:3000";
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+  NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_API_URL
+    : "http://localhost:4000";
 export const SESSION_ID_KEY = "shorturl_session_id";
 export const ACCESS_TOKEN_KEY = "shorturl_access_token";
 

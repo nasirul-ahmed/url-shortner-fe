@@ -1,7 +1,7 @@
 "use client";
 
 import useToast from "@/contexts/toast-context";
-import { BASE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { cn, copyUrl } from "@/lib/utils";
 import { ShortUrlLink } from "@/types/api";
 import { Check, Copy } from "lucide-react";
@@ -30,7 +30,7 @@ export default function LinkItem({ link }: { link: ShortUrlLink }) {
     <div className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-blue-200 transition-all mb-3 group">
       <div className="flex flex-col overflow-hidden mr-4">
         <span className="text-blue-600 font-bold text-sm truncate">
-          {`${BASE_URL}/${link.shortCode}`}
+          {`${SITE_URL}/${link.shortCode}`}
         </span>
         <span className="text-gray-400 text-xs truncate">{link.longUrl}</span>
       </div>

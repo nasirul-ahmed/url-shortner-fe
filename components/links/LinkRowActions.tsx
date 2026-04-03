@@ -5,7 +5,7 @@ import { ShortUrlLink } from "@/types/api";
 import { copyUrl } from "@/lib/utils";
 import { Copy, Trash2, ExternalLink, MoreVertical } from "lucide-react";
 import useToast from "@/contexts/toast-context";
-import { BASE_URL } from "@/lib/constants";
+import { BASE_URL, SITE_URL } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
 interface LinkRowActionsProps {
@@ -32,7 +32,7 @@ export function LinkRowActions({ link, onDelete }: LinkRowActionsProps) {
   };
 
   const handleOpen = () => {
-    window.open(`${BASE_URL}/${link.shortCode}`, "_blank");
+    window.open(`${SITE_URL}/${link.shortCode}`, "_blank");
     setShowMenu(false);
   };
 

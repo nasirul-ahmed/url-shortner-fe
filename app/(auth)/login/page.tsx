@@ -10,8 +10,8 @@ import useToast from "@/contexts/toast-context";
 const PRIMARY = "#5e72e4";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("nasirul369@gmail.com");
-  const [password, setPassword] = useState("nasir1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const { toast } = useToast();
