@@ -99,7 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!token) {
           return;
         }
-        const { data } = await authApi.me();
+        const data = await authApi.me();
         setUser(data);
       } catch {
         tokenStore.clear();
