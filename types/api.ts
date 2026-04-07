@@ -48,8 +48,36 @@ export interface CreateLinkPayload {
   customAlias?: string;
 }
 
-export interface LinkAnalytics {
-  clicksOverTime: { date: string; clicks: number }[];
+export interface AnalyticsData {
+  shortCode: string;
+  totalClicks: number;
+  uniqueVisitors: number;
+  deviceBreakdown: {
+    desktop: number;
+    mobile: number;
+    tablet: number;
+    unknown: number;
+  };
+  topReferrers: Array<{
+    referer: string;
+    count: number;
+  }>;
+  clicksOverTime: Array<{
+    date: string;
+    clicks: number;
+  }>;
+  lastUpdated: string;
+}
+
+export interface DashboardLinkAnalytics {
+  totalClicks: number;
+  uniqueVisitors: number;
+  totalUrls: number;
+  deviceBreakdown: Record<string, number>;
+  topReferrers: Array<{ referer: string; count: number }>;
+  clicksOverTime: Array<{ date: string; clicks: number }>;
+  topUrls: Array<{ shortCode: string; clicks: number }>;
+  lastUpdated: Date;
 }
 
 export interface ApiResponse<T> {

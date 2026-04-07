@@ -3,7 +3,7 @@
 import React from "react";
 
 interface ReferrerData {
-  referrer: string;
+  referer: string;
   count: number;
 }
 
@@ -27,10 +27,10 @@ export function ReferrersChart({ data }: ReferrersChartProps) {
       <h3 className="text-lg font-bold text-gray-900 mb-6">Top Referrers</h3>
       <div className="space-y-4">
         {data.map((d) => (
-          <div key={d.referrer} className="space-y-2">
+          <div key={d.referer} className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm font-medium text-gray-700">
-                {d.referrer}
+                {d.referer}
               </span>
               <span className="text-sm font-bold text-gray-900">{d.count}</span>
             </div>

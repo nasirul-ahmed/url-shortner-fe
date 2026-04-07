@@ -25,7 +25,7 @@ export function ClicksChart({ data }: ClicksChartProps) {
   return (
     <div className="bg-white rounded-2xl border border-gray-200 p-6">
       <h3 className="text-lg font-bold text-gray-900 mb-4">Clicks over time</h3>
-      <div className="h-64 flex items-flex-end justify-between gap-2">
+      <div className="h-64 flex items-end justify-between gap-2">
         {data.map((d) => (
           <div key={d.date} className="flex flex-col items-center gap-2 flex-1">
             <div

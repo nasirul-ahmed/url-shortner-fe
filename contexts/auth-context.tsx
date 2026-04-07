@@ -10,7 +10,6 @@ import React, {
 import { useRouter } from "next/navigation";
 import { tokenStore } from "@/lib/token-store";
 import { authApi } from "@/lib/api-module";
-import { LoginResponse } from "@/types/api";
 
 export enum UserRole {
   USER = "USER",
@@ -64,13 +63,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const userDetails = await authApi.me();
         setUser(userDetails.data);
-        // window.location.href = "/dashboard";
         router.push("/dashboard");
-      } catch (e) {
-        const payload = JSON.parse(atob(data.accessToken.split(".")[1]));
-        setUser(payload.user);
-        // window.location.href = "/dashboard";
-        router.push("/dashboard");
+      } catch {
+        tokenStore.clear();
+        router.push("/login");
       } finally {
         setIsLoading(false);
       }
